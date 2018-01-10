@@ -22,21 +22,21 @@ public class WeaponTest {
 
         Game game = new Game().setPlayerWeapon(Weapon.ROCK).setCpuWeapon(Weapon.PAPER);
         game.determineWinner();
-        assertThat(Winner.CPU).isEqualTo(game.getWinner());
+        assertThat(game.getWinner()).isEqualTo(Winner.CPU);
     }
 
     @Test
     public void rockVsScissor(){
         Game game = new Game().setPlayerWeapon(Weapon.ROCK).setCpuWeapon(Weapon.SCISSOR);
         game.determineWinner();
-        assertThat(Winner.PLAYER).isEqualTo(game.getWinner());
+        assertThat(game.getWinner()).isEqualTo(Winner.PLAYER);
     }
 
     @Test
     public void rockVsRock(){
         Game game = new Game().setPlayerWeapon(Weapon.ROCK).setCpuWeapon(Weapon.ROCK);
         game.determineWinner();
-        assertThat(Winner.DRAW).isEqualTo(game.getWinner());
+        assertThat(game.getWinner()).isEqualTo(Winner.DRAW);
     }
 
     @Test
@@ -44,21 +44,21 @@ public class WeaponTest {
 
         Game game = new Game().setPlayerWeapon(Weapon.PAPER).setCpuWeapon(Weapon.SCISSOR);
         game.determineWinner();
-        assertThat(Winner.CPU).isEqualTo(game.getWinner());
+        assertThat(game.getWinner()).isEqualTo(Winner.CPU);
     }
 
     @Test
     public void paperVsRock() {
         Game game = new Game().setPlayerWeapon(Weapon.PAPER).setCpuWeapon(Weapon.ROCK);
         game.determineWinner();
-        assertThat(Winner.PLAYER).isEqualTo(game.getWinner());
+        assertThat(game.getWinner()).isEqualTo(Winner.PLAYER);
     }
 
     @Test
     public void paperVsPaper() {
         Game game = new Game().setPlayerWeapon(Weapon.PAPER).setCpuWeapon(Weapon.PAPER);
         game.determineWinner();
-        assertThat(Winner.DRAW).isEqualTo(game.getWinner());
+        assertThat(game.getWinner()).isEqualTo(game.getWinner());
     }
 
     @Test
@@ -66,21 +66,21 @@ public class WeaponTest {
 
         Game game = new Game().setPlayerWeapon(Weapon.SCISSOR).setCpuWeapon(Weapon.ROCK);
         game.determineWinner();
-        assertThat(Winner.CPU).isEqualTo(game.getWinner());
+        assertThat(game.getWinner()).isEqualTo(Winner.CPU);
     }
 
     @Test
     public void scissorVsPaper(){
         Game game = new Game().setPlayerWeapon(Weapon.SCISSOR).setCpuWeapon(Weapon.PAPER);
         game.determineWinner();
-        assertThat(Winner.PLAYER).isEqualTo(game.getWinner());
+        assertThat(game.getWinner()).isEqualTo(Winner.PLAYER);
     }
 
     @Test
     public void scissorVsScissor(){
         Game game = new Game().setPlayerWeapon(Weapon.SCISSOR).setCpuWeapon(Weapon.SCISSOR);
         game.determineWinner();
-        assertThat(Winner.DRAW).isEqualTo(game.getWinner());
+        assertThat(game.getWinner()).isEqualTo(Winner.DRAW);
     }
 
     @Test

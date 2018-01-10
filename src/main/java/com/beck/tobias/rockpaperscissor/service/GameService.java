@@ -15,7 +15,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GameService {
-
     @Autowired
     private GameRepository gameRepository;
 
