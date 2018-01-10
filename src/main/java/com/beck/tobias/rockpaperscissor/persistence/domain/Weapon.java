@@ -1,8 +1,11 @@
 package com.beck.tobias.rockpaperscissor.persistence.domain;
 
+/**
+ * Different Weapons for the Game
+ */
 public enum Weapon {
 
-    Rock, Paper, Scissor;
+    ROCK, PAPER, SCISSOR
 
 }
 

@@ -1,14 +1,12 @@
 package com.beck.tobias.rockpaperscissor.persistence.domain;
 
 import lombok.Data;
-import lombok.Value;
-
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import java.util.Random;
 
 /**
  * GameData
@@ -21,16 +19,81 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long gameId;
 
-    private Weapon player;
-    private Weapon cpu;
+    private Weapon playerWeapon;
+    private Weapon cpuWeapon;
 
-    private GameStatus status;
-    private Winner winner = Winner.NONE;
+    private GameState status = GameState.WAIT_FOR_PLAYER_INPUT;
+    private Winner winner;
 
 
-    public enum Winner {
+    /**
+     * Starts a Game with Player Weapon as Weapon for the Game
+     *
+     * @param playerWeapon Rock, Paper or Scissor
+     */
+    public void play(Weapon playerWeapon) {
+        //if winner is set, than game was played and you dont need a second winner
+        if (winner == null) {
+            this.cpuWeapon = randomWeapon();
+            this.playerWeapon = playerWeapon;
+            determineWinner(playerWeapon, cpuWeapon);
+            status = GameState.FINISH;
+        }
+    }
 
-           NONE, CPU, PLAYER, DRAW;
+    /**
+     * Randomly choose a Weapon
+     *
+     * @return a random Weapon
+     */
+    private Weapon randomWeapon() {
+        return Weapon.values()[new Random().nextInt(Weapon.values().length)];
+    }
+
+    /**
+     * Logic of the Game, find out who won the Game and fill winner variable in Game
+     *
+     * @param playerWeapon Weapon chosen by Player
+     * @param cpuWeapon    Weapon generated or chosen by CPU
+     */
+    private void determineWinner(Weapon playerWeapon, Weapon cpuWeapon) {
+
+        switch (playerWeapon) {
+
+            case ROCK:
+                if (cpuWeapon.equals(Weapon.ROCK)) {
+                    setWinner(Winner.DRAW);
+                    break;
+                } else if (cpuWeapon.equals(Weapon.PAPER)) {
+                    setWinner(Winner.CPU);
+                    break;
+                } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
+                    setWinner(Winner.PLAYER);
+                    break;
+                }
+            case PAPER:
+                if (cpuWeapon.equals(Weapon.ROCK)) {
+                    setWinner(Winner.PLAYER);
+                    break;
+                } else if (cpuWeapon.equals(Weapon.PAPER)) {
+                    setWinner(Winner.DRAW);
+                    break;
+                } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
+                    setWinner(Winner.CPU);
+                    break;
+                }
+            case SCISSOR:
+                if (cpuWeapon.equals(Weapon.ROCK)) {
+                    setWinner(Winner.CPU);
+                    break;
+                } else if (cpuWeapon.equals(Weapon.PAPER)) {
+                    setWinner(Winner.PLAYER);
+                    break;
+                } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
+                    setWinner(Winner.DRAW);
+                    break;
+                }
+        }
 
     }
 

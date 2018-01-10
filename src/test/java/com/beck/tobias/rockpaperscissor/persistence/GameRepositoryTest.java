@@ -3,7 +3,6 @@ package com.beck.tobias.rockpaperscissor.persistence;
 import com.beck.tobias.rockpaperscissor.persistence.domain.Game;
 import com.beck.tobias.rockpaperscissor.persistence.domain.Weapon;
 import com.beck.tobias.rockpaperscissor.persistence.repository.GameRepository;
-import com.beck.tobias.rockpaperscissor.service.GameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +18,11 @@ public class GameRepositoryTest {
 
     @Autowired
     private GameRepository gameRepository;
-    private GameService service;
 
     @Test
     public void insertGame(){
         Game game = new Game();
-        game.setPlayer(Weapon.Paper);
+        game.setPlayerWeapon(Weapon.PAPER);
         gameRepository.save(game);
 
         Game loadedGame = gameRepository.findOne(game.getGameId());

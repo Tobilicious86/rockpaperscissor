@@ -1,27 +1,28 @@
 package com.beck.tobias.rockpaperscissor.controller;
 
 import com.beck.tobias.rockpaperscissor.persistence.domain.Game;
-import com.beck.tobias.rockpaperscissor.persistence.domain.GameStatus;
+import com.beck.tobias.rockpaperscissor.persistence.domain.GameState;
 import com.beck.tobias.rockpaperscissor.persistence.domain.Weapon;
-import com.beck.tobias.rockpaperscissor.persistence.exceptions.WeaponException;
 import com.beck.tobias.rockpaperscissor.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
+
 /**
  * RestController of Rock, Paper, Scissor
  */
+@RequestMapping(value = "/games")
 @RestController
 public class GameController {
 
-    GameService service;
-
+    private GameService service;
 
     @Autowired
     public GameController(GameService service){
@@ -29,105 +30,76 @@ public class GameController {
     }
 
     /**
-     * Quick Game, choose Weapon and it starts,
-     * when Option is "withBrunnen" more Weapons are possible,
-     * all others will be set as normal and a normal Rock Paper Scissor Game
-     * @param weapon
-     * @param option
-     * @return
+     * Starts a quick Game
+     * @param weapon player Plays with
+     * @return a game
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/playagame")
-    public Game playAGame (@RequestParam(value = "weapon") Weapon weapon, @RequestParam(value = "type", required = false, defaultValue = "normal") String option) throws WeaponException {
-
+    @RequestMapping(method = RequestMethod.POST, value = "/playnewgame")
+    @ResponseStatus(HttpStatus.OK)
+    public Game playAGame(@RequestParam(value = "weapon") Weapon weapon) {
         Game game = new Game();
-        Weapon weaponPlayer;
-        Weapon weaponCpu;
-        String typeOfGame;
+        service.createNewGame(game);
+        playGame(game.getGameId(), weapon);
+        service.saveGame(game);
 
-        typeOfGame = option;
-
-        if (!typeOfGame.equals("withBrunnen")) {
-
-            try {
-                weaponPlayer = weapon;
-            } catch (IllegalArgumentException e) {
-                game.setStatus(GameStatus.Error);
-
-                throw new WeaponException(weapon.toString());
-
-            }
-            weaponCpu = service.randomWeapon();
-
-            game.setCpu(weaponCpu);
-            game.setPlayer(weaponPlayer);
-
-            service.getGameRepository().save(game);
-            game.setWinner(service.findWinner(game));
-            game.setStatus(GameStatus.Finish);
-
-            service.getGameRepository().save(game);
-            return game;
-
-        }
-        else {
-            return new Game();
-        }
+        return game;
     }
 
-
-
     /**
-     * Starts a new Empty Game and add it to Repository
-     * @return
+     * Creates a new empty Game
+     * @return a new URL for the created Game
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/newGame")
+    @RequestMapping(method = RequestMethod.POST, value = "/newGame")
     @ResponseStatus(HttpStatus.CREATED)
-    public HttpHeaders newGame(){
+    public ResponseEntity newGame() {
         Game game = new Game();
-        service.createGame(game);
+        service.createNewGame(game);
 
        HttpHeaders headers = new HttpHeaders();
         headers.setLocation(linkTo(GameController.class).slash(game.getGameId()).toUri());
 
-        return headers;
+        return new ResponseEntity(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
     /**
-     * Returns a List with all not Finished Games
-     * @return List of open Games
+     * Get-Method to get a Game with given ID
+     * @param id of Game
+     * @return a Game with given id
      */
-    @RequestMapping(method = RequestMethod.GET, value="/openGames")
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Game> showOpenGames(){
-        return service.findNotFinishedGames();
+    public Game getGame(@PathVariable Long id){
+
+        return service.loadGame(id);
     }
 
     /**
-     * loads the Game with
-     * @param id
-     * @return Game with ID in Parameter
+     * Loads a game with ID and sets the player Weapon and plays the Game
+     *
+     * @param id           of Game that should be loaded
+     * @param playerWeapon Weapon of player
+     * @return the played Game
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/game/{id}")
-    public Game getGame(@PathVariable Long id){
-        service.loadGame(id);
-        Game game = service.getGame();
-        return game;
-    }
-    @ExceptionHandler
-    @RequestMapping(method = RequestMethod.PUT, value = "/game/{id}/play")
-    public void playGame (@PathVariable Long id, @RequestParam(value = "weapon") Weapon weapon) throws WeaponException {
-        service.loadGame(id);
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Game playGame(@PathVariable Long id, @RequestParam(value = "weapon") Weapon playerWeapon) {
+        Game game = service.loadGame(id);
 
-        try {
-            service.getGame().setPlayer(weapon);
-        }catch(IllegalArgumentException e){
-            throw new WeaponException(weapon.toString());
-        }
+        return service.playGame(game.getGameId(), playerWeapon);
+
+
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "game/hist")
-    public List<Game> showHist(){
-        return service.getGameRepository().findByStatus(GameStatus.Finish);
+    /**
+     * History of finished Games
+     *
+     * @return a List with all finished Games
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/hist")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Game> showHist() {
+        return service.getGameByStatus(GameState.FINISH);
     }
+
 
 }
