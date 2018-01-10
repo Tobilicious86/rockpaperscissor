@@ -49,7 +49,7 @@ public class WeaponTest {
 
     @Test
     public void paperVsRock() {
-        Game game = new Game().setPlayerWeapon(Weapon.SCISSOR).setCpuWeapon(Weapon.PAPER);
+        Game game = new Game().setPlayerWeapon(Weapon.PAPER).setCpuWeapon(Weapon.ROCK);
         game.determineWinner();
         assertThat(Winner.PLAYER).isEqualTo(game.getWinner());
     }
