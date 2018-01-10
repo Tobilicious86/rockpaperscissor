@@ -36,7 +36,7 @@ public class Game {
         if (winner == null) {
             this.cpuWeapon = randomWeapon();
             this.playerWeapon = playerWeapon;
-            determineWinner(playerWeapon, cpuWeapon);
+            determineWinner();
             status = GameState.FINISH;
         }
     }
@@ -51,51 +51,50 @@ public class Game {
     }
 
     /**
-     * Logic of the Game, find out who won the Game and fill winner variable in Game
+     * Logic of the Game, find out who won the Game and sets winner variable in Game
      *
-     * @param playerWeapon Weapon chosen by Player
-     * @param cpuWeapon    Weapon generated or chosen by CPU
      */
-    private void determineWinner(Weapon playerWeapon, Weapon cpuWeapon) {
+    public void determineWinner() {
 
-        switch (playerWeapon) {
+        if (playerWeapon != null && cpuWeapon != null && winner == null) {
+            switch (playerWeapon) {
 
-            case ROCK:
-                if (cpuWeapon.equals(Weapon.ROCK)) {
-                    setWinner(Winner.DRAW);
-                    break;
-                } else if (cpuWeapon.equals(Weapon.PAPER)) {
-                    setWinner(Winner.CPU);
-                    break;
-                } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
-                    setWinner(Winner.PLAYER);
-                    break;
-                }
-            case PAPER:
-                if (cpuWeapon.equals(Weapon.ROCK)) {
-                    setWinner(Winner.PLAYER);
-                    break;
-                } else if (cpuWeapon.equals(Weapon.PAPER)) {
-                    setWinner(Winner.DRAW);
-                    break;
-                } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
-                    setWinner(Winner.CPU);
-                    break;
-                }
-            case SCISSOR:
-                if (cpuWeapon.equals(Weapon.ROCK)) {
-                    setWinner(Winner.CPU);
-                    break;
-                } else if (cpuWeapon.equals(Weapon.PAPER)) {
-                    setWinner(Winner.PLAYER);
-                    break;
-                } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
-                    setWinner(Winner.DRAW);
-                    break;
-                }
+                case ROCK:
+                    if (cpuWeapon.equals(Weapon.ROCK)) {
+                        setWinner(Winner.DRAW);
+                        break;
+                    } else if (cpuWeapon.equals(Weapon.PAPER)) {
+                        setWinner(Winner.CPU);
+                        break;
+                    } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
+                        setWinner(Winner.PLAYER);
+                        break;
+                    }
+                case PAPER:
+                    if (cpuWeapon.equals(Weapon.ROCK)) {
+                        setWinner(Winner.PLAYER);
+                        break;
+                    } else if (cpuWeapon.equals(Weapon.PAPER)) {
+                        setWinner(Winner.DRAW);
+                        break;
+                    } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
+                        setWinner(Winner.CPU);
+                        break;
+                    }
+                case SCISSOR:
+                    if (cpuWeapon.equals(Weapon.ROCK)) {
+                        setWinner(Winner.CPU);
+                        break;
+                    } else if (cpuWeapon.equals(Weapon.PAPER)) {
+                        setWinner(Winner.PLAYER);
+                        break;
+                    } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
+                        setWinner(Winner.DRAW);
+                        break;
+                    }
+            }
+
         }
-
     }
-
 
 }
