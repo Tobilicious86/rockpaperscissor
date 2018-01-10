@@ -101,5 +101,16 @@ public class GameController {
         return service.getGameByStatus(GameState.FINISH);
     }
 
+    /**
+     * All Games
+     *
+     * @return List of all Games
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Game> showAll() {
+        return service.getAllGames();
+    }
+
 
 }

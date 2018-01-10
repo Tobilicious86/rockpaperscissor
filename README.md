@@ -8,7 +8,7 @@ Um den Service zu starten, muss über Maven das Projekt erst gepackt werden:
 
 und danach die Springboot Anwendung gestartet werden
 
-`$  java -jar target/rockpaperscissor-0.0.1-SNAPSHOT.jar`
+`$  java -jar target/rockpaperscissor-1.0.0.jar`
 
 Danach ist der Webserver hochgefahren und läuft auf dem Port 8080.
 

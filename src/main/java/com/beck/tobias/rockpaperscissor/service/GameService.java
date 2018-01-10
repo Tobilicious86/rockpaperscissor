@@ -74,4 +74,13 @@ public class GameService {
         return gameRepository.findByStatus(status);
     }
 
+    /**
+     * Load List from Repo
+     *
+     * @return a list with all Games
+     */
+    public List<Game> getAllGames() {
+        return gameRepository.allGames();
+    }
+
 }
