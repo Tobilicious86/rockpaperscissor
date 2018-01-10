@@ -63,6 +63,9 @@ public class Game {
                     if (cpuWeapon.equals(Weapon.ROCK)) {
                         setWinner(Winner.DRAW);
                         break;
+                    } else if (cpuWeapon.equals(Weapon.FOUNTAIN)) {
+                        setWinner(Winner.CPU);
+                        break;
                     } else if (cpuWeapon.equals(Weapon.PAPER)) {
                         setWinner(Winner.CPU);
                         break;
@@ -80,6 +83,9 @@ public class Game {
                     } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
                         setWinner(Winner.CPU);
                         break;
+                    } else if (cpuWeapon.equals(Weapon.FOUNTAIN)) {
+                        setWinner(Winner.PLAYER);
+                        break;
                     }
                 case SCISSOR:
                     if (cpuWeapon.equals(Weapon.ROCK)) {
@@ -91,9 +97,24 @@ public class Game {
                     } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
                         setWinner(Winner.DRAW);
                         break;
+                    } else if (cpuWeapon.equals(Weapon.FOUNTAIN)) {
+                        setWinner(Winner.CPU);
+                        break;
+                    }
+                case FOUNTAIN:
+                    if (cpuWeapon.equals(Weapon.ROCK)) {
+                        setWinner(Winner.PLAYER);
+                        break;
+                    } else if (cpuWeapon.equals(Weapon.PAPER)) {
+                        setWinner(Winner.CPU);
+                        break;
+                    } else if (cpuWeapon.equals(Weapon.SCISSOR)) {
+                        setWinner(Winner.PLAYER);
+                        break;
+                    } else if (cpuWeapon.equals(Weapon.FOUNTAIN)) {
+                        setWinner(Winner.DRAW);
                     }
             }
-
         }
     }
 

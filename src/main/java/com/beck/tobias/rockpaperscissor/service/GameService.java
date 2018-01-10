@@ -74,4 +74,7 @@ public class GameService {
         return gameRepository.findByStatus(status);
     }
 
+    public List<Game> getAllGames() {
+        return gameRepository.allGames();
+    }
 }

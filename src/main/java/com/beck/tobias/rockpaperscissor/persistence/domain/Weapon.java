@@ -5,7 +5,7 @@ package com.beck.tobias.rockpaperscissor.persistence.domain;
  */
 public enum Weapon {
 
-    ROCK, PAPER, SCISSOR
+    ROCK, PAPER, SCISSOR, FOUNTAIN
 
 }
 
