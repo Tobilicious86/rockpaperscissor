@@ -5,7 +5,7 @@ addons:
   sonarcloud:
     organization: "tobilicious86-github"
     token:
-      secure: "bXcd50CfnmqCRpvXWw9l1Q"
+      secure: "e0c96455db0cff16b9015582c6c6f942807c3d7d"
 jdk:
   - oraclejdk8
 script:
